@@ -6,7 +6,7 @@ import { setWeb3Provider, resetWeb3Provider, setAddress, setBalance } from "./ac
 import { NETWORK, NETWORKS, ellipseAddress } from "./utils/chain";
 import { makeStyles } from '@material-ui/core/styles';
 import {
-   Button, IconButton, ListItemIcon, Typography, 
+  Button, IconButton, ListItemIcon, Typography,
   Divider, Tooltip, Grid, AppBar, Toolbar, MenuItem, Link,
   Popper, Grow, Paper, MenuList, ClickAwayListener
 } from '@material-ui/core';
@@ -156,6 +156,7 @@ function App(props) {
         await provider.disconnect()
       }
       resetWeb3Provider();
+      history.replace('/');
     },
     [provider, resetWeb3Provider]
   );

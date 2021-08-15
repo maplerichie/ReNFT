@@ -67,12 +67,7 @@ function Burn(props) {
         let sourceImage = new Image();
         sourceImage.crossOrigin = "anonymous";
         sourceImage.src = url;
-        console.log('source', sourceImage);
-        // let sourceCanvas = document.createElement('canvas');// new HTMLCanvasElement(sourceImage.width, sourceImage.height);
-        // sourceCanvas.width = sourceImage.width;
-        // sourceCanvas.height = sourceImage.height;
-        // let sourceCtx = sourceCanvas.getContext('2d');
-        // sourceCtx.drawImage(sourceImage, 0, 0);
+        await sourceImage.decode();
 
         let frameSrc;
         let innerX;
@@ -85,7 +80,7 @@ function Burn(props) {
         let innerHeight;
         let targetWidth;
         let targetHeight;
-        if (sourceImage.height / sourceImage.width > 1.25) {
+        if (sourceImage.height / sourceImage.width >= 1.2) {
             frameSrc = './frame_43.png';
             innerWidth = 991;
             innerHeight = 1414;
@@ -127,6 +122,7 @@ function Burn(props) {
         let frameImage = new Image();
         frameImage.crossOrigin = "anonymous";
         frameImage.src = frameSrc;
+        await frameImage.decode();
         let frameCanvas = document.createElement('canvas');// new HTMLCanvasElement(targetWidth, targetHeight);
         frameCanvas.width = targetWidth;
         frameCanvas.height = targetHeight;
@@ -140,6 +136,7 @@ function Burn(props) {
         frameCtx.font = "24px Roboto";
         let formattedDate = '- ' + today.toLocaleDateString("en-US", options);
         frameCtx.fillText(formattedDate, dateX - (12 * formattedDate.length), dateY + 48 + 24);
+
         return frameCanvas.toDataURL();
         // return blob;
     }

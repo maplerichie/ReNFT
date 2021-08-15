@@ -44,9 +44,9 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
+// function useQuery() {
+//     return new URLSearchParams(useLocation().search);
+// }
 
 const myTheme = {
     'common.backgroundColor': '#fff',
@@ -54,13 +54,14 @@ const myTheme = {
 
 
 function NewDesign(props) {
-    let query = useQuery();
+    // let query = useQuery();
     const classes = useStyles();
     const { address, chainId } = props;
     let [data, setData] = React.useState([]);
     const editorRef = createRef();
 
     const setEdit = async (name, url) => {
+        // console.log(query.get('type'));
         editorRef.current.getInstance().loadImageFromURL(url, name).then(result => {
             editorRef.current.getInstance().clearUndoStack();
             // console.log('old : ' + result.oldWidth + ', ' + result.oldHeight);
@@ -70,7 +71,6 @@ function NewDesign(props) {
 
     useEffect(() => {
         if (!chainId || !address) return;
-        console.log(query.get('type'));
         api.getCollectibles(chainId, address).then((res) => {
             let collectibles = [];
             for (var collectible of res.data.data.items) {
@@ -87,14 +87,14 @@ function NewDesign(props) {
             }
             setData(collectibles);
         }).catch((err) => console.log(err));
-    }, [chainId, address, query]);
+    }, [chainId, address]);
 
     // <Typography>{query.get('type')}</Typography>
     return (
         <div className={classes.root}>
             <Grid container className={classes.myCollection}>
                 <Grid item>
-                    <Typography>Select to burn</Typography>
+                    <Typography>My NFTs</Typography>
                 </Grid>
                 <ImageList className={classes.imageList} cols={1}>
                     {data.length > 0 && data.map((collectible, index) => (

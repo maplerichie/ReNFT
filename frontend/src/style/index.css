@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito");
+html,
+* {
+  font-family: 'Nunito';
+}
+.cursorCanvas {
+  z-index: 10;
+  position: absolute;
+}
+.paintCanvas {
+  background: white;
+  z-index: 0
+}
+.tui-image-editor-header-logo {
+  display: none !important;
+}
+.tui-image-editor-header-buttons {
+  display: none !important;
+}
+.tui-image-editor-download-btn {
+  display: none !important;
+}
+/* div.twitter-picker > div:nth-child(1){
+  display: none;
+}
+div.twitter-picker > div:nth-child(2){
+    display: none;
+} */

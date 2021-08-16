@@ -22,12 +22,27 @@ const covalentInstance = axios.create({
     //     'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     // },
 });
+const raribleInstance = axios.create({
+    baseURL: 'https://api.rarible.com/protocol/v0.1/ethereum/',
+    // headers: {
+    //     'content-type': 'application/json',
+    //     'x-api-key': process.env.REACT_APP_COVALENT_API,
+    //     'Access-Control-Allow-Headers' : 'Content-Type, x-api-key',
+    //     'Access-Control-Allow-Origin' : '*',
+    //     'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    // },
+});
 
 const api = {
     getCollectibles: (chainId, address) =>
         covalentInstance({
             'method': 'GET',
             'url': chainId + '/address/' + address + '/balances_v2/?nft=true&no-nft-fetch=false&match=%7B%22type%22%3A+%22nft%22%7D&key=' + process.env.REACT_APP_COVALENT_API,
+        }),
+    getRaribleCollectibles: (address) =>
+        raribleInstance({
+            'method': 'GET',
+            'url': 'nft/items/byOwner?includeMeta=true&owner=' + address,
         }),
     getData: () =>
         instance({

@@ -61,6 +61,7 @@ function Home(props) {
                     <img className={classes.imgs} alt="a" src="./audius.png" />
                     <img className={classes.imgs} alt="b" src="./covalent.png" />
                     <img className={classes.imgs} alt="c" src="./ENS.png" />
+                    <img className={classes.imgs} alt="r" src="./rarible.png" />
                     <img className={classes.imgs} alt="d" src="./nftstorage.png" />
                     <img className={classes.imgs} alt="e" src="./opensea.png" />
                     <img className={classes.imgs} alt="f" src="./unlock.jpg" />

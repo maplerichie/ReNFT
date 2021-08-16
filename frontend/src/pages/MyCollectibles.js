@@ -6,7 +6,7 @@ import {
     Grid, Container, Avatar, Card, CardActionArea, CardMedia, Typography, Button, CardActions, CardContent, Tooltip, Box
 } from '@material-ui/core';
 import {
-  withRouter,
+    withRouter,
 } from "react-router-dom";
 
 
@@ -26,41 +26,37 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'space-between',
     },
     iconBtn: {
-      marginLeft: 16,
-      height: 48,
-      width: 48,
-      fontSize: 24,
-      boxShadow: '0 2px 8px rgb(0 0 0 / 20%)',
+        marginLeft: 16,
+        height: 48,
+        width: 48,
+        fontSize: 24,
+        boxShadow: '0 2px 8px rgb(0 0 0 / 20%)',
     },
 }));
 
 function MyCollectibles(props) {
     const classes = useStyles();
-    const { address, chainId, history } = props;
+    const { address, history } = props;
     let [data, setData] = React.useState([]);
 
     const handleLink = (url) => {
         history.push(url);
-      }
+    }
     useEffect(() => {
-        if (!chainId || !address) return;
-        api.getCollectibles(chainId, address).then((res) => {
+        if (!address) return;
+        api.getRaribleCollectibles(address).then((res) => {
             let collectibles = [];
-            for (var collectible of res.data.data.items) {
-                if (collectible.balance !== "0") {
-                    for (var sub of collectible.nft_data) {
-                        collectibles.push({
-                            name: sub.external_data.name ? sub.external_data.name : collectible.contract_ticker_symbol + ' #' + sub.token_id,
-                            image: sub.external_data.image,
-                            contract: collectible.contract_address,
-                            token_id: sub.token_id,
-                        });
-                    }
-                }
+            for (var collectible of res.data.items) {
+                collectibles.push({
+                    name: collectible.meta.name ? collectible.meta.name : '#' + collectible.tokenId,
+                    image: collectible.meta.image.url.PREVIEW ? collectible.meta.image.url.PREVIEW : collectible.meta.image.url.ORIGINAL,
+                    contract: collectible.contract,
+                    token_id: collectible.tokenId,
+                });
             }
             setData(collectibles);
         }).catch((err) => console.log(err));
-    }, [chainId, address]);
+    }, [address]);
 
     return (
         <Container>
@@ -112,7 +108,6 @@ function MyCollectibles(props) {
 const mapStateToProps = (state) => {
     return {
         address: state.address,
-        chainId: state.chainId,
     };
 };
 

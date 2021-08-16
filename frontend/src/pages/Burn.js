@@ -49,7 +49,7 @@ const myTheme = {
 
 function Burn(props) {
     const classes = useStyles();
-    const { address, chainId } = props;
+    const { address } = props;
     let [data, setData] = React.useState([]);
     // let [selectedImage, setImage] = React.useState({ url: './logo.png', name: 'Logo' });
     const editorRef = createRef();
@@ -127,8 +127,8 @@ function Burn(props) {
         frameCanvas.width = targetWidth;
         frameCanvas.height = targetHeight;
         let frameCtx = frameCanvas.getContext('2d');
-        frameCtx.drawImage(frameImage, 0, 0);
         frameCtx.drawImage(sourceImage, innerX, innerY, innerWidth, innerHeight);
+        frameCtx.drawImage(frameImage, 0, 0);
         frameCtx.font = "48px Roboto";
         frameCtx.fillText(name, nameX, nameY + 48 + 24);
         let options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -142,24 +142,20 @@ function Burn(props) {
     }
 
     useEffect(() => {
-        if (!chainId || !address) return;
-        api.getCollectibles(chainId, address).then((res) => {
+        if (!address) return;
+        api.getRaribleCollectibles(address).then((res) => {
             let collectibles = [];
-            for (var collectible of res.data.data.items) {
-                if (collectible.balance !== "0") {
-                    for (var sub of collectible.nft_data) {
-                        collectibles.push({
-                            name: sub.external_data.name ? sub.external_data.name : collectible.contract_ticker_symbol + ' #' + sub.token_id,
-                            image: sub.external_data.image,
-                            contract: collectible.contract_address,
-                            token_id: sub.token_id,
-                        });
-                    }
-                }
+            for (var collectible of res.data.items) {
+                collectibles.push({
+                    name: collectible.meta.name ? collectible.meta.name : '#' + collectible.tokenId,
+                    image: collectible.meta.image.url.PREVIEW ? collectible.meta.image.url.PREVIEW : collectible.meta.image.url.ORIGINAL,
+                    contract: collectible.contract,
+                    token_id: collectible.tokenId,
+                });
             }
             setData(collectibles);
         }).catch((err) => console.log(err));
-    }, [chainId, address]);
+    }, [address]);
 
     return (
         <div className={classes.root}>
@@ -213,7 +209,6 @@ function Burn(props) {
 const mapStateToProps = (state) => {
     return {
         address: state.address,
-        chainId: state.chainId,
     };
 };
 
